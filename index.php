@@ -1,3 +1,5 @@
+<!-- Teeme nii, et meie andmebaasi fail on kaasatud index failiga. Et toimuks andmebaasiga suhtlus -->
+<?php require_once 'config/mysqli.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,6 +34,23 @@
     <!-- Siin toimub autmaatne sisu lugemine -->
     <div class="container">
         <!-- Siia tuleb üks kompleksne if lause :) -->
+        <?php 
+        //* if(isset($_GET['page'])) {
+        //*    $file = $_GET['page'].'.php';
+        //*    $database->show($_GET);
+        //*    echo $file;
+        if(isset($_GET['page'])) {
+            $file = $_GET['page'].'.php';
+            if(file_exists($file) && is_file($file)) {
+                require_once $file;
+            } else {
+                echo 'Vigane fail '.$file;
+            }
+        } else {
+            // Kui page pole, siis naita avalehte
+            include_once 'homepage.php';
+        }
+        ?>
     </div>
 </body>
 

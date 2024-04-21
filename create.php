@@ -1,5 +1,26 @@
 <?php
+
 // Kas submit nuppu on vajutatud
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $birth = $database->getVar('birth');
+    $salary = $_POST['salary'];
+    $height = $_POST['height'];
+    if (empty($salary)) {
+        $salary = 'NULL';
+    }
+    if (empty($height)) {
+        $height = 'NULL';
+    }
+    $sql = 'INSERT INTO simple (name, birth, salary, height, added) VALUES (' . $database->dbFix($name) . ', ' . $database->dbFix($birth) . ', ' . $salary . ', ' . $height . ', NOW())';
+    //echo $sql; see oli testiks
+    if ($database->dbQuery($sql)) {
+        $success = true;
+        $_POST = array();
+    } else {
+        $success = false;
+    }
+}
 ?>
 <div class="row">
     <div class="col-md-8 mx-auto">
@@ -7,6 +28,15 @@
 
         <?php
         // Siia tuleb kas roheline või punane teavitus kast lisamise kohta
+        if(isset($success) && $success) {
+            ?>
+            <div class="alert alert-success"> Sissekanne on tehtud tabelisse! </div>
+            <?php
+        } else if(isset($success) && !$success) {
+            ?>
+            <div class="alert alert-danger"> Sissekande tegemisel tekkis tõrge. </div>
+            <?php
+        }
         ?>
 
         <form action="#" method="post">
